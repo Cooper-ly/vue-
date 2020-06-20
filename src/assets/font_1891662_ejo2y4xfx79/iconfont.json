@@ -1,0 +1,30 @@
+{
+  "id": "1891662",
+  "name": "vue_shop",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "629360",
+      "name": "锁",
+      "font_class": "suo",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "630051",
+      "name": "我的聚划算",
+      "font_class": "wodejuhuasuan",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "15218885",
+      "name": "我",
+      "font_class": "me",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    }
+  ]
+}
