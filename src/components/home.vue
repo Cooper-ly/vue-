@@ -4,113 +4,34 @@
     <!-- 头部区 -->
     <el-header>
       <div>
-        <div>logo</div>
+        <div>这是一个logo</div>
         <span>电商后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
-        <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#333744" text-color="#fff"
-          active-text-color="#ffd04b">
+      <el-aside :width="isCollapse ? '64px' :'200px'">
+        <div class="toggle-button" @click="toggeCollapse"> |||</div>
+        <el-menu default-active="$route.path" class="el-menu-vertical-demo" background-color="#333744" text-color="#fff"
+          active-text-color="#409Eff" :unique-opened="true" :collapse="isCollapse" :collapse-transition="false" router>
           <!-- 一级菜单 -->
-          <el-submenu index="1">
+          <el-submenu :index="item.id+''" v-for=" item in menuList" :key="item.id">
             <!-- 一级菜单模板区域 -->
             <template slot="title">
               <!-- 一级菜单图标 -->
-              <i class="el-icon-location"></i>
+              <i :class="iconsObj[item.id]"></i>
               <!-- 一级菜单文本 -->
-              <span>导航一</span>
+              <span>{{item.authName}}</span>
             </template>
             <!-- 二级菜单文本 -->
 
-            <el-menu-item index="1-4-1">
+            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id">
               <template slot="title">
-                <!-- 一级菜单图标 -->
-                <i class="el-icon-location"></i>
-                <!-- 一级菜单文本 -->
-                <span>导航一</span>
-              </template>
-            </el-menu-item>
-
-          </el-submenu>
-          <el-submenu index="2">
-            <!-- 一级菜单模板区域 -->
-            <template slot="title">
-              <!-- 一级菜单图标 -->
-              <i class="el-icon-location"></i>
-              <!-- 一级菜单文本 -->
-              <span>导航一</span>
-            </template>
-            <!-- 二级菜单文本 -->
-
-            <el-menu-item index="1-4-1">
-              <template slot="title">
-                <!-- 一级菜单图标 -->
-                <i class="el-icon-location"></i>
-                <!-- 一级菜单文本 -->
-                <span>导航一</span>
-              </template>
-            </el-menu-item>
-
-          </el-submenu>
-          <el-submenu index="3">
-            <!-- 一级菜单模板区域 -->
-            <template slot="title">
-              <!-- 一级菜单图标 -->
-              <i class="el-icon-location"></i>
-              <!-- 一级菜单文本 -->
-              <span>导航一</span>
-            </template>
-            <!-- 二级菜单文本 -->
-
-            <el-menu-item index="1-4-1">
-              <template slot="title">
-                <!-- 一级菜单图标 -->
-                <i class="el-icon-location"></i>
-                <!-- 一级菜单文本 -->
-                <span>导航一</span>
-              </template>
-            </el-menu-item>
-
-          </el-submenu>
-          <el-submenu index="4">
-            <!-- 一级菜单模板区域 -->
-            <template slot="title">
-              <!-- 一级菜单图标 -->
-              <i class="el-icon-location"></i>
-              <!-- 一级菜单文本 -->
-              <span>导航一</span>
-            </template>
-            <!-- 二级菜单文本 -->
-
-            <el-menu-item index="1-4-1">
-              <template slot="title">
-                <!-- 一级菜单图标 -->
-                <i class="el-icon-location"></i>
-                <!-- 一级菜单文本 -->
-                <span>导航一</span>
-              </template>
-            </el-menu-item>
-
-          </el-submenu>
-          <el-submenu index="5">
-            <!-- 一级菜单模板区域 -->
-            <template slot="title">
-              <!-- 一级菜单图标 -->
-              <i class="el-icon-location"></i>
-              <!-- 一级菜单文本 -->
-              <span>导航一</span>
-            </template>
-            <!-- 二级菜单文本 -->
-
-            <el-menu-item index="1-4-1">
-              <template slot="title">
-                <!-- 一级菜单图标 -->
-                <i class="el-icon-location"></i>
-                <!-- 一级菜单文本 -->
-                <span>导航一</span>
+                <!-- 二级菜单图标 -->
+                <i class="el-icon-menu"></i>
+                <!-- 二级菜单文本 -->
+                <span>{{subItem.authName}}</span>
               </template>
             </el-menu-item>
 
@@ -119,17 +40,49 @@
         </el-menu>
       </el-aside>
       <!-- 主体区 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
+
 export default {
+  created () {
+    this.getMenuList()
+  },
+  data () {
+    return {
+      menuList: [],
+      iconsObj: {
+        125: 'iconfont icon-hrstaffarchives',
+        103: 'iconfont icon-basepermissionauthGroup',
+        102: 'iconfont icon-goodswhtotalStock',
+        145: 'iconfont icon-icon-test',
+        101: 'iconfont icon-goodswhDetail'
+      },
+      isCollapse: false
+
+    }
+  },
   methods: {
+
     logout () {
       window.sessionStorage.clear()
       this.$router.push('/login')
+    },
+    // 获取所有的菜单
+    async getMenuList () {
+      const { data: res } = await this.$http.get('menus')
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error(res.mata.msg)
+      this.menuList = res.data
+    },
+    // 点击按钮 切换菜单的折叠与展开
+    toggeCollapse () {
+      this.isCollapse = !this.isCollapse
     }
   }
 }
@@ -157,8 +110,23 @@ export default {
 }
 .el-aside {
   background-color: #333744;
+  .el-menu {
+    border-right: none;
+  }
 }
 .el-main {
   background-color: #eaedf1;
+}
+.iconfont {
+  margin-right: 10px;
+}
+.toggle-button {
+  background-color: #4a5064;
+  font-size: 10px;
+  line-height: 24px;
+  text-align: center;
+  color: #fff;
+  letter-spacing: 0.2em;
+  cursor: pointer;
 }
 </style>

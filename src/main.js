@@ -12,12 +12,10 @@ import './assets/css/global.css'
 import './assets/font_1891662_ejo2y4xfx79/iconfont.css'
 
 import axios from 'axios'
-import qs from 'qs'
-Vue.use(qs)
 
 // 配置请求的根路径
 axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
-axios.interceptors.requset.use(config => {
+axios.interceptors.request.use(config => {
   // console.log(config)
   config.headers.Authorization = window.sessionStorage.getItem('token')
   return config
