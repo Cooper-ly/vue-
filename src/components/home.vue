@@ -4,7 +4,7 @@
     <!-- 头部区 -->
     <el-header>
       <div>
-        <div>这是一个logo</div>
+        <div>logo</div>
         <span>电商后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
@@ -13,7 +13,7 @@
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' :'200px'">
         <div class="toggle-button" @click="toggeCollapse"> |||</div>
-        <el-menu default-active="$route.path" class="el-menu-vertical-demo" background-color="#333744" text-color="#fff"
+        <el-menu :default-active="activePath" class="el-menu-vertical-demo" background-color="#333744" text-color="#fff"
           active-text-color="#409Eff" :unique-opened="true" :collapse="isCollapse" :collapse-transition="false" router>
           <!-- 一级菜单 -->
           <el-submenu :index="item.id+''" v-for=" item in menuList" :key="item.id">
@@ -24,9 +24,10 @@
               <!-- 一级菜单文本 -->
               <span>{{item.authName}}</span>
             </template>
-            <!-- 二级菜单文本 -->
 
-            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id">
+            <!-- 二级菜单模板区域 -->
+            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id"
+              @click="saveNavStatu('/'+subItem.path)">
               <template slot="title">
                 <!-- 二级菜单图标 -->
                 <i class="el-icon-menu"></i>
@@ -52,6 +53,7 @@
 export default {
   created () {
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   data () {
     return {
@@ -63,7 +65,9 @@ export default {
         145: 'iconfont icon-icon-test',
         101: 'iconfont icon-goodswhDetail'
       },
-      isCollapse: false
+      isCollapse: false,
+      // 为激活的链接地址保存
+      activePath: ''
 
     }
   },
@@ -83,6 +87,11 @@ export default {
     // 点击按钮 切换菜单的折叠与展开
     toggeCollapse () {
       this.isCollapse = !this.isCollapse
+    },
+    // 保持激活链接高亮
+    saveNavStatu (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   }
 }
