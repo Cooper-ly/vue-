@@ -374,7 +374,7 @@ export default {
         this.addDialogVisible = false
         // 重新获取用户列表数据
         this.getUserList()
-        console.log(this.addUserform)
+        // console.log(this.addUserform)
       })
     },
 
@@ -413,6 +413,7 @@ export default {
         this.$message.success('修改用户信息成功')
       })
     },
+    // 删除角色
     removeUserById (id) {
       this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
