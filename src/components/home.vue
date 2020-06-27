@@ -7,16 +7,35 @@
         <div>logo</div>
         <span>电商后台管理系统</span>
       </div>
-      <el-button type="info" @click="logout">退出</el-button>
+      <el-button
+        type="info"
+        @click="logout"
+      >退出</el-button>
     </el-header>
     <el-container>
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' :'200px'">
-        <div class="toggle-button" @click="toggeCollapse"> |||</div>
-        <el-menu :default-active="activePath" class="el-menu-vertical-demo" background-color="#333744" text-color="#fff"
-          active-text-color="#409Eff" :unique-opened="true" :collapse="isCollapse" :collapse-transition="false" router>
+        <div
+          class="toggle-button"
+          @click="toggeCollapse"
+        > |||</div>
+        <el-menu
+          :default-active="activePath"
+          class="el-menu-vertical-demo"
+          background-color="#333744"
+          text-color="#fff"
+          active-text-color="#409Eff"
+          :unique-opened="true"
+          :collapse="isCollapse"
+          :collapse-transition="false"
+          router
+        >
           <!-- 一级菜单 -->
-          <el-submenu :index="item.id+''" v-for=" item in menuList" :key="item.id">
+          <el-submenu
+            :index="item.id+''"
+            v-for=" item in menuList"
+            :key="item.id"
+          >
             <!-- 一级菜单模板区域 -->
             <template slot="title">
               <!-- 一级菜单图标 -->
@@ -26,8 +45,12 @@
             </template>
 
             <!-- 二级菜单模板区域 -->
-            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id"
-              @click="saveNavStatu('/'+subItem.path)">
+            <el-menu-item
+              :index="'/'+subItem.path"
+              v-for="subItem in item.children"
+              :key="subItem.id"
+              @click="saveNavStatu('/'+subItem.path)"
+            >
               <template slot="title">
                 <!-- 二级菜单图标 -->
                 <i class="el-icon-menu"></i>
@@ -80,7 +103,7 @@ export default {
     // 获取所有的菜单
     async getMenuList () {
       const { data: res } = await this.$http.get('menus')
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) return this.$message.error(res.mata.msg)
       this.menuList = res.data
     },
