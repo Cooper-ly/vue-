@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import TreeTable from 'vue-table-with-tree-grid'
 /* eslint-disable no-unused-vars */
 
 // 导入全局样式表
@@ -23,7 +24,7 @@ axios.interceptors.request.use(config => {
 Vue.prototype.$http = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
-
+Vue.component('table-tree', TreeTable)
 new Vue({
   router,
   render: h => h(App)
